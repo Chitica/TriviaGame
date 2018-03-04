@@ -9,6 +9,9 @@ var choiceOne, choiceTwo, choiceThree, choiceFour;
 var answer;
 var firstChoice, secondChoice, thirdChoice, fourthChoice;
 var score;
+var counter = 21;
+var timeLeft = $("#time-left");
+var feedback = $("#feedback");
 
 var questions = [
     ["1. What is 2 + 2 equal to ", 7, 4, 9, 40, 4],
@@ -31,9 +34,11 @@ function setQuestion(){
     if( position >= questions.length){
         testStatus.html("You have completed this math quiz");
         resultStats.html("<h2>You got " + correct + " of " + questions.length + " questions correct</h2>");
-
+        
         position = 0;
         correct = 0;
+        stopTimer();
+        feedback.html("");
 
         return false;
     }
@@ -67,7 +72,6 @@ $(document).ready(function(){
      var secondChoice = $("#second-answer");
      var thirdChoice = $("#third-answer");
      var fourthChoice = $("#fourth-answer");
-     var feedback = $("#feedback");
     var firstChoicePicked = firstChoice.click(function(){
         if(choiceOne === answer){
             feedback.html("CORRECT!");
@@ -114,10 +118,26 @@ $(document).ready(function(){
 })
 }
 
+    
+    var interval = setInterval(function() {
+        counter--;
+        timeLeft.html(counter);
+        if (counter == 0) {
+            restart();
+            clearInterval();
+        }
+    }, 1000);
+
+    function stopTimer(){
+        clearInterval(interval);
+        timeLeft.html("");
+       
+    }
 
 function restart(){
     score.html( correct + " of 10");
     position++;
+    counter = 21;
     setQuestion();
 }
 
